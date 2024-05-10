@@ -1,12 +1,40 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { useState } from 'react';
+import { PaperProvider, MD2DarkTheme, MD2LightTheme } from 'react-native-paper';
+import { expo } from './app.json';
+import { AppRegistry } from 'react-native';
+import { NavigationContainer, DarkTheme as NavigationDarkTheme, DefaultTheme as NavigationDefaultTheme, } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import merge from 'deepmerge';
+
+import WelcomeScreen from './screens/welcomeScreen';
+import MainScreen from './screens/mainScreen';
+import Hotels from './screens/hotelsAndStaysScreen';
+import Restaurant from './screens/restaurentsScreen';
+import Destinations from './screens/destinationsScreen';
 
 export default function App() {
+  const CombinedDefaultTheme = merge(MD2LightTheme, NavigationDefaultTheme);
+  const CombinedDarkTheme = merge(MD2DarkTheme, NavigationDarkTheme);
+  const [isThemeDark, setIsThemeDark] = useState(false);
+
+  const Stack = createStackNavigator();
+
+  let theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <PaperProvider theme={theme}>
+      <NavigationContainer theme={theme}>
+        <Stack.Navigator>
+          <Stack.Screen name="Welcome" component={WelcomeScreen} />
+          <Stack.Screen name="Main" component={MainScreen} />
+          <Stack.Screen name="Hotels" component={Hotels} />
+          <Stack.Screen name="Restaurants" component={Restaurant} />
+          <Stack.Screen name="Destinations" component={Destinations} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 }
 
@@ -18,3 +46,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+AppRegistry.registerComponent(expo.name, () => App);
