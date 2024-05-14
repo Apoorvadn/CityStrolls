@@ -1,4 +1,3 @@
-import { Appbar } from 'react-native-paper';
 import { FC, useState, useMemo, useEffect } from 'react';
 
 import { View, StyleSheet } from 'react-native';
@@ -8,14 +7,13 @@ import HotelDetails from '../components/hotelDetails';
 
 const Hotels: FC<HotelProps> = ({ navigation, route }) => {
     const [hotel, setHotel] = useState<Hotel>();
-    const [isfetching, setIsFetching] = useState(true);
     const params = useMemo(() => route.params, [route.params]);
 
     useEffect(() => {
-        if (route?.params?.hotel) {
-            setHotel(route?.params?.hotel)
+        if (route?.params?.item) {
+            setHotel(route?.params?.item)
         }
-    }, [route?.params?.hotel])
+    }, [route?.params?.item])
 
 
     return (

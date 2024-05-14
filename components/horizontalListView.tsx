@@ -9,12 +9,18 @@ interface HorizontalListViewProps {
     navigation: any;
 }
 
+export enum Screens {
+    HOTELS = 'HOTELS',
+    RESTAURANTS = 'RESTAURANTS',
+    DESTINATIONS = 'DESTINATIONS'
+}
+
 const HorizontalListView: FC<HorizontalListViewProps> = ({ items, navigation }) => {
     return (
-        <ScrollView horizontal>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} >
             {items.map((item) => {
                 return (
-                    <TouchableOpacity style={styles.recommendedImageContainer} onPress={() => navigation.navigate('Hotels', { hotel: item })}>
+                    <TouchableOpacity style={styles.recommendedImageContainer} onPress={() => navigation.navigate(items[0].type, { item })}>
                         <View style={styles.cardContainer}>
                             <View style={styles.card}>
                                 <Image key={item.avatar[0]} style={styles.image} source={{ uri: item.avatar[0] }} />
@@ -41,7 +47,7 @@ const styles = StyleSheet.create({
         color: colors.grey
     },
     cardContainer: {
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     card: {
         backgroundColor: 'white',

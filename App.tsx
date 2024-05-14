@@ -11,7 +11,7 @@ import merge from 'deepmerge';
 import WelcomeScreen from './screens/welcomeScreen';
 import MainScreen from './screens/mainScreen';
 import Hotels from './screens/hotelsAndStaysScreen';
-import Restaurant from './screens/restaurentsScreen';
+import Restaurants from './screens/restaurentsScreen';
 import Destinations from './screens/destinationsScreen';
 
 export default function App() {
@@ -28,10 +28,10 @@ export default function App() {
       <NavigationContainer theme={theme}>
         <Stack.Navigator>
           <Stack.Screen name="Welcome" component={WelcomeScreen} />
-          <Stack.Screen name="Main" component={MainScreen} />
-          <Stack.Screen name="Hotels" component={Hotels} />
-          <Stack.Screen name="Restaurants" component={Restaurant} />
-          <Stack.Screen name="Destinations" component={Destinations} />
+          <Stack.Screen name="CityStrolls" component={MainScreen} />
+          <Stack.Screen name="HOTELS" component={Hotels} />
+          <Stack.Screen name="RESTAURANTS" component={Restaurants} />
+          <Stack.Screen name="DESTINATIONS" component={Destinations} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

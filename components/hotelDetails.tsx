@@ -1,9 +1,10 @@
 import { FC } from 'react'
 import { Text, Icon } from 'react-native-paper';
-import { View, StyleSheet, ScrollView, Image } from "react-native";
+import { View, StyleSheet, ScrollView, Image, SafeAreaView, Linking } from "react-native";
 
 import { Hotel } from "../interfaces/hotel";
 import { StarRating } from './starComponent';
+import { colors } from '../assets/colors/globalColors';
 
 interface HotelDetailsProps {
     item: Hotel;
@@ -13,9 +14,10 @@ interface HotelDetailsProps {
 const HotelDetails: FC<HotelDetailsProps> = ({ item }) => {
 
     return (
-        <View style={styles.cardContainer}>
+        <SafeAreaView style={styles.container}>
             <View style={styles.card}>
-                <ScrollView horizontal>
+                <ScrollView snapToEnd={true}
+                    horizontal showsHorizontalScrollIndicator={false}>
                     {item.avatar.map((url) => {
                         return (
                             <View >
@@ -29,25 +31,35 @@ const HotelDetails: FC<HotelDetailsProps> = ({ item }) => {
             </View>
             <View style={styles.detailsContainer}>
                 <Text style={{ fontSize: 20, fontWeight: 'bold' }}>{item.name}</Text>
-                <View>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <StarRating rating={item.rating} />
+                    <Text style={{ color: "gold", fontWeight: 'bold', textAlign: 'center', fontSize: 17 }}>Price: {item.price}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', top: 5 }}>
                     <Icon source="map-marker" size={20} />
-                    <Text style={{ fontSize: 15 }}>{item.address}</Text>
+                    <Text style={{ fontSize: 14, left: 5 }}>{item.address}</Text>
                 </View>
-                <View style={{ top: 10 }}>
-                    <Text>Amenities: {item.amenities}</Text>
+                <View style={{ top: 14, alignItems: 'center' }}>
+                    <Text style={{ textAlign: 'left' }}>Description: {item.description}</Text>
                 </View>
-                <View style={{ top: 10 }}>
-                    <Text>Description: {item.description}</Text>
-                    <Text>Website: {item.website}</Text>
-                    <Text>Contact: {item.contact}</Text>
-                    <Text>Email: {item.email}</Text>
-                    <Text>Price: {item.price}</Text>
+                <View style={{ flexDirection: 'row', top: 36 }}>
+                    <Icon source="web" size={20} />
+                    <Text style={{ left: 5, color: colors.brightBlue }} onPress={() => Linking.openURL(item.website)}>
+                        WEBSITE
+                    </Text>
+                </View>
+                <View style={{ flexDirection: 'column', top: 38 }}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Icon source="phone" size={20} />
+                        <Text style={{ fontSize: 14, left: 5 }}>{item.contact}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Icon source="email" size={20} />
+                        <Text style={{ fontSize: 14, left: 5 }}> {item.email}</Text>
+                    </View>
                 </View>
             </View>
-        </View>
+        </SafeAreaView>
     );
 
 }
@@ -55,33 +67,30 @@ const HotelDetails: FC<HotelDetailsProps> = ({ item }) => {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: '#ecf0f1',
-        marginTop: 30,
-    },
-    cardContainer: {
-        justifyContent: 'center',
     },
     card: {
         justifyContent: 'center',
         alignItems: 'center',
         margin: 20,
         width: 350,
-        height: 720,
+        height: 710,
         borderRadius: 20,
         left: 10,
         backgroundColor: "white",
-        top: 60
+        padding: 10,
+        elevation: 4,
     },
     image: {
-        width: 348,
+        width: 330,
         height: 400,
         borderRadius: 10,
-
     },
     detailsContainer: {
         bottom: 430,
         width: 310,
         marginLeft: 40,
-        marginTop: 150
+        marginTop: 130,
+        elevation: 6
     }
 })
 

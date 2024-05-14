@@ -1,24 +1,32 @@
 import { Card, TextInput, PaperProvider, Text, Avatar, TouchableRipple } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import { colors } from "../assets/colors/globalColors";
-import HorizontalListView from "../components/horizontalListView";
+import HorizontalListView, { Screens } from "../components/horizontalListView";
 import { useState, useEffect } from "react";
 
-import { getDataFromServer } from "../service/storeService";
+import { getDataFromServer, updateDataToServer } from "../service/storeService";
 import { Hotel, HotelProps } from "../interfaces/hotel";
 
 function MainScreen({ navigation }) {
     const [horizontalListData, setHorizontalListData] = useState([]);
     const [isfetching, setIsFetching] = useState(true);
     const [hotels, setHotels] = useState<Hotel[]>([]);
+    const [restaurants, setRestaurants] = useState<Hotel[]>([]);
+    const [destinations, setDestinations] = useState<Hotel[]>([]);
+
 
 
     useEffect(() => {
         const asyncFnc = async () => {
             setIsFetching(true);
-            const allData = await getDataFromServer('hotels') || [];
+            const hotelsData = await getDataFromServer('hotels') || [];
+            const restaurantsData = await getDataFromServer('restaurant') || [];
+            const destinationData = await getDataFromServer(Screens.DESTINATIONS) || [];
             setIsFetching(false);
-            setHotels(allData);
+            setHotels(hotelsData);
+            setDestinations(destinationData);
+            setRestaurants(restaurantsData);
+            setHorizontalListData(hotelsData);
         }
         asyncFnc();
     }, []);
@@ -26,11 +34,11 @@ function MainScreen({ navigation }) {
 
     return (
         <PaperProvider>
-            <Card>
+            <Card style={styles.card}>
                 <Card.Cover style={styles.imageContainer} source={require('../assets/main.jpg')} />
             </Card>
             <TextInput
-                mode='flat'
+                mode='outlined'
                 label="Let's Discover"
                 right={<TextInput.Icon icon="search-web"
                 />}
@@ -54,13 +62,17 @@ function MainScreen({ navigation }) {
                     <Text style={{ color: colors.grey, fontWeight: 'bold', fontSize: 16 }} >Hotel</Text>
                 </View>
                 <View style={styles.catagoryContainer}>
-                    <TouchableRipple onPress={() => { navigation.navigate('Restaurant') }}>
+                    <TouchableRipple onPress={() => {
+                        setHorizontalListData(restaurants)
+                    }}>
                         <Avatar.Icon size={60} icon='food' color="white" style={{ backgroundColor: colors.orange }} />
                     </TouchableRipple>
                     <Text style={{ color: colors.grey, fontWeight: 'bold', fontSize: 16 }}>Restaurant</Text>
                 </View>
                 <View style={styles.catagoryContainer}>
-                    <TouchableRipple onPress={() => { navigation.navigate('Destinations') }}>
+                    <TouchableRipple onPress={() => {
+                        setHorizontalListData(destinations)
+                    }}>
                         <Avatar.Icon size={60} icon='tent' color="white" style={{ backgroundColor: colors.orange }} />
                     </TouchableRipple>
                     <Text style={{ color: colors.grey, fontWeight: 'bold', fontSize: 16 }}>Destinations</Text>
@@ -76,21 +88,30 @@ function MainScreen({ navigation }) {
 export default MainScreen;
 
 const styles = StyleSheet.create({
+    card: {
+        height: 275,
+        borderRadius: 8,
+        margin: 16,
+        elevation: 6,
+        alignItems: 'center',
+    },
     imageContainer: {
-        width: 410,
+        width: 380,
         height: 300,
-        borderRadius: 60
     },
     textInput: {
         bottom: 290,
         width: 350,
         marginLeft: 30,
+        borderRadius: 16,
+        opacity: 0.5
     },
     catagory: {
-        bottom: 30,
+        bottom: 25,
         fontWeight: 'bold',
         left: 20,
-        color: colors.grey
+        color: colors.grey,
+
     },
     catagoryContainer: {
         alignItems: 'center',

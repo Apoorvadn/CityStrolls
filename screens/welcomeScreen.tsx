@@ -16,7 +16,7 @@ function WelcomeScreen({ navigation }) {
                     <Text style={styles.textContainer} variant="bodyMedium">Discover The Best Places To Enjoy Your Vacation</Text>
                 </Card.Content>
                 <Card.Actions>
-                    <Button icon="image-search" mode="contained" onPress={() => navigation.navigate('Main')}>Explore</Button>
+                    <Button icon="image-search" mode="contained" onPress={() => navigation.navigate('CityStrolls')}>Explore</Button>
                 </Card.Actions>
             </Card>
         </PaperProvider>

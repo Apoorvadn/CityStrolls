@@ -1,4 +1,11 @@
+import { Screens } from "../components/horizontalListView";
+import { destinations } from "../screens/test";
+
 export const getDataFromServer = async (endpoint: string) => {
+    if (endpoint === Screens.DESTINATIONS) {
+        return destinations;
+    }
+
     const URL = `https://663a17741ae792804bee0669.mockapi.io/${endpoint}`
 
     const res = await fetch(URL);
@@ -16,6 +23,7 @@ export const setDataFromServer = async (data: string) => {
         },
         body: JSON.stringify(data),
     });
+
 
     const tasks = await res.json();
     return tasks;

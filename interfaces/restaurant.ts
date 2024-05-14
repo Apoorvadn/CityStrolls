@@ -1,18 +1,18 @@
-export interface Hotel {
+export interface Restaurant {
     id: string;
     name: string;
     avatar: string[];
     address: string;
-    rating: number;
-    description: string;
+    ratings: number;
+    food: string[];
     website: string;
     contact: string;
-    email: string;
     price: number;
+    timings: number;
     type: string;
 }
 
-export interface HotelProps {
+export interface RestaurantProps {
     navigation: any;
     route: any;
 }
