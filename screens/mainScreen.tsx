@@ -6,27 +6,41 @@ import { useState, useEffect } from "react";
 
 import { getDataFromServer, updateDataToServer } from "../service/storeService";
 import { Hotel, HotelProps } from "../interfaces/hotel";
+import { useQuery } from "@tanstack/react-query";
+import ContentLoader, { Rect, Circle } from 'react-content-loader/native'
 
 function MainScreen({ navigation }) {
-    const [horizontalListData, setHorizontalListData] = useState([]);
-    const [isfetching, setIsFetching] = useState(true);
-    const [hotels, setHotels] = useState<Hotel[]>([]);
+    const { isLoading: isHotelLoading, error: hotelErrorHandling, data: hotels } = useQuery({
+        queryKey: ['hotel'],
+        queryFn: () => getDataFromServer('hotels'),
+    });
+
+
+    const { isLoading: isRestaurentLoading, error: restaurantErrorHandling, data: restaurant } = useQuery({
+        queryKey: ['restaurant'],
+        queryFn: () => getDataFromServer('restaurant'),
+    });
+    const { isLoading: isDestinationLoading, error: destinationErrorHandling, data: destination } = useQuery({
+        queryKey: ['destination'],
+        queryFn: () => getDataFromServer('destination'),
+    });
+
+    const [horizontalListData, setHorizontalListData] = useState(hotels);
     const [restaurants, setRestaurants] = useState<Hotel[]>([]);
     const [destinations, setDestinations] = useState<Hotel[]>([]);
 
-
+    useEffect(() => {
+        if (!isHotelLoading && !hotelErrorHandling && hotels) {
+            setHorizontalListData(hotels);
+        }
+    }, [isHotelLoading, hotelErrorHandling, hotels]);
 
     useEffect(() => {
         const asyncFnc = async () => {
-            setIsFetching(true);
-            const hotelsData = await getDataFromServer('hotels') || [];
             const restaurantsData = await getDataFromServer('restaurant') || [];
             const destinationData = await getDataFromServer(Screens.DESTINATIONS) || [];
-            setIsFetching(false);
-            setHotels(hotelsData);
             setDestinations(destinationData);
             setRestaurants(restaurantsData);
-            setHorizontalListData(hotelsData);
         }
         asyncFnc();
     }, []);
@@ -79,7 +93,15 @@ function MainScreen({ navigation }) {
                 </View>
             </View>
             <View>
-                <HorizontalListView items={horizontalListData} navigation={navigation} />
+                {isHotelLoading ? (
+                    <ContentLoader backgroundColor="white" foregroundColor="lightgrey">
+                        <Circle cx="30" cy="30" r="30" />
+                        <Rect x="80" y="17" rx="4" ry="4" width="300" height="13" />
+                        <Rect x="80" y="40" rx="3" ry="3" width="250" height="10" />
+                    </ContentLoader>
+                ) : (
+                    <HorizontalListView items={horizontalListData || []} navigation={navigation} />
+                )}
             </View>
         </PaperProvider>
     )

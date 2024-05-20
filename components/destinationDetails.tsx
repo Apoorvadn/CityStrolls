@@ -25,6 +25,7 @@ const DestinationDetails: FC<DestinationDetailsProps> = ({ item }) => {
                             </View>
                         )
                     })}
+
                 </ScrollView>
             </View>
             <View style={styles.detailsContainer}>

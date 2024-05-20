@@ -7,6 +7,7 @@ import { AppRegistry } from 'react-native';
 import { NavigationContainer, DarkTheme as NavigationDarkTheme, DefaultTheme as NavigationDefaultTheme, } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import merge from 'deepmerge';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import WelcomeScreen from './screens/welcomeScreen';
 import MainScreen from './screens/mainScreen';
@@ -23,18 +24,22 @@ export default function App() {
 
   let theme = isThemeDark ? CombinedDarkTheme : CombinedDefaultTheme;
 
+  const queryClient = new QueryClient()
+
   return (
-    <PaperProvider theme={theme}>
-      <NavigationContainer theme={theme}>
-        <Stack.Navigator>
-          <Stack.Screen name="Welcome" component={WelcomeScreen} />
-          <Stack.Screen name="CityStrolls" component={MainScreen} />
-          <Stack.Screen name="HOTELS" component={Hotels} />
-          <Stack.Screen name="RESTAURANTS" component={Restaurants} />
-          <Stack.Screen name="DESTINATIONS" component={Destinations} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </PaperProvider>
+    <QueryClientProvider client={queryClient}>
+      <PaperProvider theme={theme}>
+        <NavigationContainer theme={theme}>
+          <Stack.Navigator>
+            <Stack.Screen name="Welcome" component={WelcomeScreen} />
+            <Stack.Screen name="CityStrolls" component={MainScreen} />
+            <Stack.Screen name="HOTELS" component={Hotels} />
+            <Stack.Screen name="RESTAURANTS" component={Restaurants} />
+            <Stack.Screen name="DESTINATIONS" component={Destinations} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
+    </QueryClientProvider>
   );
 }
 
